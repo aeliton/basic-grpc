@@ -1,3 +1,4 @@
+![main](https://github.com/aeliton/basic-grpc/actions/workflows/c-cpp.yml/badge.svg?branch=main)
 # Basic CMake gRPC project structure with tests
 
 This is a minimal Protobuf/gRPC C++ example project using CMake with GTest and
