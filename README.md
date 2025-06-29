@@ -1,11 +1,13 @@
-# Basic CMake gRPC project structure
+# Basic CMake gRPC project structure with tests
 
-This is a minimal Protobuf/gRPC C++ example project using CMake.
+This is a minimal Protobuf/gRPC C++ example project using CMake with GTest and
+GMock unit tests.
 
 ## Debian/Ubuntu Requirements
 
 ```
-sudo apt install cmake ninja-build clang protobuf-compiler-grpc libgrpc++-dev
+sudo apt install cmake ninja-build clang protobuf-compiler-grpc libgrpc++-dev \
+    libgtest-dev libgmock-dev
 ```
 
 ## Building

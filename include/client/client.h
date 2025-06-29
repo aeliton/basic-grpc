@@ -7,8 +7,10 @@
 class CharClient
 {
 public:
+  explicit CharClient();
   explicit CharClient(const std::string& location);
   grpc::Status count(const std::string& text, uint32_t& count);
+  virtual std::unique_ptr<example::Char::StubInterface> createStub();
 
 private:
   std::string _location;

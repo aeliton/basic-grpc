@@ -36,6 +36,20 @@
         "configurePreset": "debug"
       }
     ],
+    "testPresets": [
+      {
+        "name": "release",
+        "configurePreset": "release",
+        "output": {"outputOnFailure": true},
+        "execution": {"noTestsAction": "error", "stopOnFailure": true}
+      },
+      {
+        "name": "debug",
+        "configurePreset": "debug",
+        "output": {"outputOnFailure": true},
+        "execution": {"noTestsAction": "error", "stopOnFailure": true}
+      }
+    ],
     "workflowPresets": [
       {
         "name": "release",
@@ -46,6 +60,10 @@
           },
           {
             "type": "build",
+            "name": "release"
+          },
+          {
+            "type": "test",
             "name": "release"
           }
         ]
@@ -59,6 +77,10 @@
           },
           {
             "type": "build",
+            "name": "debug"
+          },
+          {
+            "type": "test",
             "name": "debug"
           }
         ]
