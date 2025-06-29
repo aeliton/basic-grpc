@@ -27,22 +27,54 @@ target_include_directories(proto PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
 get_target_property(grpc_cpp_plugin_location gRPC::grpc_cpp_plugin LOCATION)
 protobuf_generate(TARGET proto LANGUAGE cpp)
-protobuf_generate(TARGET proto LANGUAGE grpc GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc PLUGIN
-  "protoc-gen-grpc=${grpc_cpp_plugin_location}")
+protobuf_generate(
+  TARGET proto
+  LANGUAGE grpc
+  GENERATE_EXTENSIONS .grpc.pb.h .grpc.pb.cc
+  PLUGIN "protoc-gen-grpc=${grpc_cpp_plugin_location}"
+  PLUGIN_OPTIONS "generate_mock_code=true"
+)
+
+add_library(client_objects OBJECT
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/client.cpp
+)
+target_include_directories(client_objects PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(client_objects PUBLIC proto)
+
+add_library(server_objects OBJECT
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/lib/server.cpp
+)
+target_include_directories(server_objects PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+target_link_libraries(server_objects PUBLIC proto)
 
 add_executable(client
- ${CMAKE_CURRENT_SOURCE_DIR}/src/client.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/app/client.cpp
 )
-target_include_directories(client PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(client PRIVATE proto)
+target_link_libraries(client PRIVATE client_objects)
 
 add_executable(server
- ${CMAKE_CURRENT_SOURCE_DIR}/src/server.cpp
+ ${CMAKE_CURRENT_SOURCE_DIR}/src/app/server.cpp
 )
-target_include_directories(server PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-target_link_libraries(server PRIVATE proto)
+target_link_libraries(server PRIVATE server_objects)
 
+find_package(GTest CONFIG REQUIRED COMPONENTS GTest GMock)
+
+enable_testing()
+
+add_executable (tests
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_server.cpp
+)
+
+target_link_libraries (tests
+  GTest::gmock
+  GTest::gtest_main
+  client_objects
+  server_objects
+)
+
+include(GoogleTest)
+gtest_discover_tests(tests)

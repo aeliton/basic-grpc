@@ -7,13 +7,12 @@
 class CharClient
 {
 public:
+  CharClient(std::unique_ptr<example::Char::StubInterface>&& s);
   explicit CharClient(const std::string& location);
   grpc::Status count(const std::string& text, uint32_t& count);
 
 private:
-  std::string _location;
-  std::shared_ptr<grpc::Channel> _channel;
-  grpc::Status _status;
+  std::unique_ptr<example::Char::StubInterface> _stub;
 };
 
 #endif

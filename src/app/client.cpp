@@ -5,27 +5,6 @@
 
 #include <iostream>
 
-CharClient::CharClient(const std::string& location)
-  : _location(location)
-  , _channel(grpc::CreateChannel(_location, grpc::InsecureChannelCredentials()))
-  , _status(grpc::Status::OK)
-{
-}
-
-grpc::Status CharClient::count(const std::string& text, uint32_t& count)
-{
-  auto stub = example::Char::NewStub(_channel);
-  grpc::ClientContext context;
-  example::Text input;
-  example::Number output;
-  input.set_content(text);
-  auto status = stub->Count(&context, input, &output);
-  if (status.ok()) {
-    count = output.content();
-  }
-  return status;
-}
-
 int main()
 {
   std::string input;
