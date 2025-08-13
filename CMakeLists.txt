@@ -13,8 +13,7 @@ if (CMAKE_COMPILE_WARNING_AS_ERROR)
   endif()
 endif()
 
-find_package(Protobuf REQUIRED)
-find_package(gRPC REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
 
 add_library(proto proto/example.proto)
 target_link_libraries(proto

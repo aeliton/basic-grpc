@@ -178,6 +178,12 @@ sudo apt install cmake ninja-build clang protobuf-compiler-grpc libgrpc++-dev \
     libgtest-dev libgmock-dev
 ```
 
+## MacOs Requirements
+
+```bash
+brew install grpc googletests
+```
+
 ## Building
 
 ```bash
